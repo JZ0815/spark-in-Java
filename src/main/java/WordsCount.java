@@ -14,7 +14,9 @@ public class WordsCount {
         lineRdd.flatMap(k -> Arrays.asList(k.split(" ")).iterator())
                 .mapToPair(k -> new Tuple2<>(k, 1))
                 .reduceByKey((k1, k2) -> k1 + k2)
-                .foreach(tuple -> System.out.println(tuple._1 + " has " + tuple._2));
+                .mapToPair(tuple -> new Tuple2<>(tuple._2, tuple._1))
+                .sortByKey(false).take(10)
+                .forEach(k -> System.out.println(k._2 + " has " + k._1));
 
         sc.close();
     }
