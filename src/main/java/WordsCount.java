@@ -12,11 +12,12 @@ public class WordsCount {
         JavaSparkContext sc = new JavaSparkContext(conf);
         JavaRDD<String> lineRdd = sc.textFile("src/main/resources/sparkDev.txt");
         lineRdd.flatMap(k -> Arrays.asList(k.split(" ")).iterator())
+                .filter(wd -> !wd.equals(""))
                 .mapToPair(k -> new Tuple2<>(k, 1))
                 .reduceByKey((k1, k2) -> k1 + k2)
                 .mapToPair(tuple -> new Tuple2<>(tuple._2, tuple._1))
                 .sortByKey(false).take(10)
-                .forEach(k -> System.out.println(k._2 + " has " + k._1));
+                .forEach(k -> System.out.println("\"" + k._2 + "\""+ " has " + k._1));
 
         sc.close();
     }
