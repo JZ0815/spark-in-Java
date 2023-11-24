@@ -13,6 +13,7 @@ public class WordsCount {
         JavaRDD<String> lineRdd = sc.textFile("src/main/resources/sparkDev.txt");
         lineRdd.flatMap(k -> Arrays.asList(k.split(" ")).iterator())
                 .filter(wd -> !wd.equals(""))
+                .map(wd -> wd.replace("[^a-zA-Z\\s]",""))
                 .mapToPair(k -> new Tuple2<>(k, 1))
                 .reduceByKey((k1, k2) -> k1 + k2)
                 .mapToPair(tuple -> new Tuple2<>(tuple._2, tuple._1))
