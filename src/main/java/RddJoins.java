@@ -40,7 +40,7 @@ public class RddJoins {
         // JavaPairRDD<Integer, Tuple2<Integer, String>> joinedRdd = visits.join(users);
         JavaPairRDD<Integer, Tuple2<Integer, Optional<String>>> joinedRdd = visits.leftOuterJoin(users);
         //joinedRdd.collect().forEach(System.out::println);
-        joinedRdd.collect().forEach(it -> System.out.println((it._2._2.get().toLowerCase())));
+        joinedRdd.collect().forEach(it -> System.out.println((it._2._2.orElse("blank"))));
 
         sc.close();
     }
