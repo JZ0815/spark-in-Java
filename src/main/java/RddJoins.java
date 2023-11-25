@@ -37,10 +37,21 @@ public class RddJoins {
         JavaPairRDD<Integer, Integer> visits = sc.parallelizePairs(visitsRaw);
         JavaPairRDD<Integer, String> users = sc.parallelizePairs(usersRaw);
 
-        // JavaPairRDD<Integer, Tuple2<Integer, String>> joinedRdd = visits.join(users);
-        JavaPairRDD<Integer, Tuple2<Integer, Optional<String>>> joinedRdd = visits.leftOuterJoin(users);
-        //joinedRdd.collect().forEach(System.out::println);
-        joinedRdd.collect().forEach(it -> System.out.println((it._2._2.orElse("blank"))));
+        System.out.println("Inner Join");
+        JavaPairRDD<Integer, Tuple2<Integer, String>> joinedRdd = visits.join(users);
+        joinedRdd.collect().forEach(System.out::println);
+
+        System.out.println("Left Outer Join");
+        JavaPairRDD<Integer, Tuple2<Integer, Optional<String>>> leftOuterJoinedRdd = visits.leftOuterJoin(users);
+        leftOuterJoinedRdd.collect().forEach(it -> System.out.println((it._2._2.orElse("blank"))));
+
+        System.out.println("Right Outer Join");
+        JavaPairRDD<Integer, Tuple2<Optional<Integer>, String>> rightJoinedRdd = visits.rightOuterJoin(users);
+        rightJoinedRdd.collect().forEach(System.out::println);
+
+        System.out.println("Full Outer Join");
+        JavaPairRDD<Integer, Tuple2<Optional<Integer>, Optional<String>>> fullJoinedRdd = visits.fullOuterJoin(users);
+        fullJoinedRdd.collect().forEach(System.out::println);
 
         sc.close();
     }
