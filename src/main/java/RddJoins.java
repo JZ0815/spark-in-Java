@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.Optional;
 import scala.Serializable;
 import scala.Tuple2;
 
@@ -36,7 +37,8 @@ public class RddJoins {
         JavaPairRDD<Integer, Integer> visits = sc.parallelizePairs(visitsRaw);
         JavaPairRDD<Integer, String> users = sc.parallelizePairs(usersRaw);
 
-        JavaPairRDD<Integer, Tuple2<Integer, String>> joinedRdd = visits.join(users);
+        // JavaPairRDD<Integer, Tuple2<Integer, String>> joinedRdd = visits.join(users);
+        JavaPairRDD<Integer, Tuple2<Integer, Optional<String>>> joinedRdd = visits.leftOuterJoin(users);
         joinedRdd.collect().forEach(System.out::println);
 
         sc.close();
