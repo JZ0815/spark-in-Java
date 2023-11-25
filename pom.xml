@@ -47,7 +47,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.virtualpairprogrammers.Main</mainClass>
+							<mainClass>org.Jie.WordCount</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
