@@ -17,15 +17,6 @@ public class WordsCount {
         SparkConf conf = new SparkConf().setAppName("spark-in-Java").setMaster("local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
-        /*SparkSession sparkSession = SparkSession.builder().appName("TestingSparkSql")
-                .master("local[*]")
-                .config("spark.sql.warehouse.dir", "file:///c:/Apache/Spark/tmp")
-                .getOrCreate();
-
-        SparkSession sparkSession = SparkSession.builder().appName("TestingSparkSql")
-                .master("spark://192.168.19.1:7077")
-                .config("spark.sql.warehouse.dir", "file:///c:/Apache/Spark/tmp")
-                .getOrCreate();*/
         JavaRDD<String> lineRdd = sc.textFile("src/main/resources/sparkDev.txt");
         lineRdd.flatMap(k -> Arrays.asList(k.split(" ")).iterator())
                 .filter(wd -> !wd.equals(""))
