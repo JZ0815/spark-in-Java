@@ -30,8 +30,9 @@ public class WordsCount {
         lineRdd.flatMap(k -> Arrays.asList(k.split(" ")).iterator())
                 .filter(wd -> !wd.equals(""))
                 .map(wd -> wd.replace("[^a-zA-Z\\s]",""))
+                //!filter before reduceByKey to improve performance, narrow transformation
                 .mapToPair(k -> new Tuple2<>(k, 1L))
-                .reduceByKey((k1, k2) -> k1 + k2)
+                .reduceByKey((k1, k2) -> k1 + k2)  //there is a shufulling, wide transformation here
                 .mapToPair(Tuple2::swap)
                 //.mapToPair(tuple -> new Tuple2<>(tuple._2, tuple._1))
                 .sortByKey(false)  //decending order
