@@ -15,6 +15,13 @@ public class SparkSQL {
         dataset.show();
         long count = dataset.count();
         System.out.println("There are " + count + " records.");
+        Row firstRow = dataset.first();
+        String subject = firstRow.get(2).toString();
+        System.out.println(subject);
+
+        int yr = Integer.parseInt(firstRow.getAs("year"));
+        System.out.println(yr);
+
         spark.close();
     }
 }
