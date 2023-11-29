@@ -7,6 +7,9 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.storage.StorageLevel;
 
+import static org.apache.spark.sql.functions.col;
+
+
 public class SparkSQL {
     public static void main(String[] args) {
         System.setProperty("hadoop.home.dir", "C:\\hadoop");
@@ -38,6 +41,10 @@ public class SparkSQL {
         Dataset<Row> filteredResult3 = dataset.filter(subjectColumn.equalTo("History")
                 .and(yearColumn.geq(2007))) ;
         filteredResult3.show();
+
+        Dataset<Row> filteredResult4 = dataset.filter(col("subject").equalTo("History")
+                .and(col("year").geq(2007))) ;
+        filteredResult4.show();
 
 
         spark.close();
