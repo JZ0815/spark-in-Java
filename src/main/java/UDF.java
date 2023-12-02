@@ -14,10 +14,10 @@ public class UDF {
         SparkSession spark = SparkSession.builder().appName("sparkSQL-in-Java").master("local[*]")
                 .config("spark.sql.warehouse.dir", "file:///c:/tmp/")  // in windows, automatically created when run
                 .getOrCreate();
-        spark.udf().register("hasPassed", grade -> {return grade.equals("A+")
-                || grade.equals("A")
-                || grade.equals("B")
-                || grade.equals("C");
+        spark.udf().register("hasPassed", (String grade) -> {return
+                grade.startsWith("A")
+                || grade.startsWith("B")
+                || grade.equals("C+");
             }, DataTypes.BooleanType);
         Dataset<Row> dataset = spark.read().option("header", true).csv("src/main/resources/exams/students.csv");
         //dataset = dataset.withColumn("pass", lit(col("grade").equalTo("A+")));
